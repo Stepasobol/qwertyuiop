@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="index.html">Назад</a>
+    <h1>Создадим штрихкод в WPF</h1>
+    <pre>
+    Генератор штрих-кода WPF на C#
+июля 20, 2022
+ · 5 мин · Музаммил Хан
+Создание и отображение изображения штрих-кода в WPF
+Штрих-код содержит информацию о товаре или компании, визуально представленную в машиночитаемом виде. Штрих-коды широко используются для отслеживания поставок и управления запасами. Мы можем легко генерировать различные типы штрих-кодов в приложениях WPF. В этой статье мы узнаем, как создать и отобразить изображение штрих-кода в приложении WPF. После выполнения указанных шагов у нас будет собственный генератор штрих-кода WPF на C#. Итак, начнем.
+
+Статья должна охватывать следующие темы:
+
+Возможности генератора штрих-кода WPF
+API генератора штрих-кода C#
+Этапы создания генератора штрих-кода WPF
+Создать штрих-код с дополнительными параметрами
+Демонстрационный генератор штрих-кода WPF
+Скачать исходный код
+Особенности генератора штрих-кода WPF
+Наш генератор штрих-кода WPF будет иметь следующие функции.
+
+Создайте следующие типы символик штрих-кода:
+Код128
+Код11
+Код39
+QR-код
+Матрица данных
+EAN13
+EAN8
+ITF14
+PDF417
+Сохраните сгенерированное изображение штрих-кода в следующих форматах:
+PNG
+JPEG
+БМП
+Предварительный просмотр сгенерированного изображения штрих-кода.
+API-интерфейс генератора штрих-кода C#
+Мы будем использовать API Aspose.BarCode for .NET для создания изображений штрих-кода и их предварительного просмотра в приложении WPF. Это многофункциональный API, который позволяет создавать, сканировать и считывать широкий спектр типов штрих-кодов. Кроме того, он позволяет управлять внешним видом сгенерированных штрих-кодов, таких как цвет фона, цвет полосы, угол поворота, x-размер, качество изображения, разрешение, подписи, размер и многое другое.
+
+Шаги по созданию генератора штрих-кода WPF
+Мы можем сгенерировать и отобразить изображение штрих-кода в приложении WPF, выполнив следующие шаги:
+
+Во-первых, создайте новый проект и выберите шаблон проекта приложения WPF.
+Select the project template.
+Select the project template.
+
+Затем введите название проекта, например, «BarcodeGen».
+
+Затем выберите платформу .NET, а затем выберите создание.
+
+Затем откройте диспетчер пакетов NuGet и установите пакет Aspose.BarCode для .NET.
+
+Установите Aspose.BarCode для .NET
+Установите Aspose.BarCode для .NET
+
+Затем добавьте новый класс Barcode.cs для определения штрих-кода.
+public class Barcode
+{
+    public string? Text { get; set; }
+
+    public BaseEncodeType? BarcodeType { get; set; }
+
+    public BarCodeImageFormat ImageType { get; set; }
+}
+Затем откройте MainWindow.xaml и добавьте необходимые элементы управления, как показано ниже:
+Добавьте необходимые элементы управления
+Добавьте необходимые элементы управления
+
+Вы также можете заменить содержимое MainWindow.xaml следующим сценарием.
+
+
+
+Затем откройте класс MainWindow.xaml.cs и добавьте событие btnGenerateClick для обработки нажатия кнопки «Создать штрих-код».
+private void btnGenerate_Click(object sender, RoutedEventArgs e)
+{
+    // Установить по умолчанию как PNG
+    var imageType = "Png";
+
+    // Получить выбранный пользователем формат изображения
+    if(rbPng.IsChecked == true)
+    {
+        imageType = rbPng.Content.ToString();
+    }
+    else if(rbBmp.IsChecked == true)
+    {
+        imageType = rbBmp.Content.ToString();
+    }
+    else if(rbJpg.IsChecked == true)
+    {
+        imageType = rbJpg.Content.ToString();
+    }
+
+    // Получить формат изображения из перечисления
+    var imageFormat = (BarCodeImageFormat)Enum.Parse(typeof(BarCodeImageFormat), imageType.ToString());
+
+    // Установить по умолчанию как Code128
+    var encodeType = EncodeTypes.Code128;
+
+    // Получить выбранный пользователем тип штрих-кода
+    if (!string.IsNullOrEmpty(comboBarcodeType.Text))
+    {
+        switch (comboBarcodeType.Text)
+        {
+            case "Code128":
+                encodeType = EncodeTypes.Code128;
+                break;
+
+            case "ITF14":
+                encodeType = EncodeTypes.ITF14;
+                break;
+
+            case "EAN13":
+                encodeType = EncodeTypes.EAN13;
+                break;
+
+            case "Datamatrix":
+                encodeType = EncodeTypes.DataMatrix;
+                break;
+
+            case "Code32":
+                encodeType = EncodeTypes.Code32;
+                break;
+
+            case "Code11":
+                encodeType = EncodeTypes.Code11;
+                break;
+
+            case "PDF417":
+                encodeType = EncodeTypes.Pdf417;
+                break;
+
+            case "EAN8":
+                encodeType = EncodeTypes.EAN8;
+                break;
+
+            case "QR":
+                encodeType = EncodeTypes.QR;
+                break;
+        }
+    }
+
+    // Инициализировать объект штрих-кода
+    Barcode barcode = new Barcode();
+    barcode.Text = tbCodeText.Text;
+    barcode.BarcodeType = encodeType;
+    barcode.ImageType = imageFormat;
+
+    try
+    {
+        string imagePath = "";
+
+        if (cbGenerateWithOptions.IsChecked == true)
+        {
+            // Сгенерируйте штрих-код с дополнительными параметрами и получите путь к изображению
+            imagePath = GenerateBarcodeWithOptions(barcode);
+        }
+        else
+        {
+            // Сгенерировать штрих-код и получить путь к изображению
+            imagePath = GenerateBarcode(barcode);
+        }
+
+        // Показать изображение
+        Uri fileUri = new Uri(Path.GetFullPath(imagePath));
+        imgDynamic.Source = new BitmapImage(fileUri);
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show(ex.Message);
+    }
+}
+После этого добавьте функцию для генерации штрих-кода.
+private string GenerateBarcode(Barcode barcode)
+{
+    // Путь к изображению
+    string imagePath = comboBarcodeType.Text + "." + barcode.ImageType;
+
+    // Инициализировать генератор штрих-кода
+    BarcodeGenerator generator = new BarcodeGenerator(barcode.BarcodeType, barcode.Text);
+
+    // Сохранить изображение
+    generator.Save(imagePath, barcode.ImageType);
+
+    return imagePath;
+}
+Наконец, запустите приложение.
+Создать штрих-код с дополнительными параметрами
+Мы также можем генерировать штрих-коды с дополнительными параметрами, характерными для типов штрих-кодов. В генератор штрих-кода WPF мы добавили флажок для создания штрих-кода с параметрами. Он вызовет следующую функцию, указывающую дополнительные параметры для разных типов штрих-кодов.
+
+private string GenerateBarcodeWithOptions(Barcode barcode)
+{
+    // Путь к изображению
+    string imagePath = comboBarcodeType.Text + "." + barcode.ImageType;
+
+    // Инициализировать генератор штрих-кода
+    BarcodeGenerator generator = new BarcodeGenerator(barcode.BarcodeType, barcode.Text);
+
+    if(barcode.BarcodeType == EncodeTypes.QR)
+    {
+        generator.Parameters.Barcode.XDimension.Pixels = 4;
+        //установить автоматическую версию
+        generator.Parameters.Barcode.QR.QrVersion = QRVersion.Auto;
+        //Установите тип автоматического кодирования QR
+        generator.Parameters.Barcode.QR.QrEncodeType = QREncodeType.Auto;
+    } 
+    else if(barcode.BarcodeType == EncodeTypes.Pdf417)
+    {
+        generator.Parameters.Barcode.XDimension.Pixels = 2;
+        generator.Parameters.Barcode.Pdf417.Columns = 3;
+    }
+    else if(barcode.BarcodeType == EncodeTypes.DataMatrix)
+    {
+        //установите DataMatrix ECC на 140
+        generator.Parameters.Barcode.DataMatrix.DataMatrixEcc = DataMatrixEccType.Ecc200;
+    }
+    else if(barcode.BarcodeType == EncodeTypes.Code32)
+    {
+        generator.Parameters.Barcode.XDimension.Millimeters = 1f;
+    }
+    else
+    {
+        generator.Parameters.Barcode.XDimension.Pixels = 2;
+        //установить BarHeight 40
+        generator.Parameters.Barcode.BarHeight.Pixels = 40;
+    }
+
+    // Сохранить изображение
+    generator.Save(imagePath, barcode.ImageType);
+
+    return imagePath;
+}
+Вы можете прочитать больше о Спецификах генерации для типов штрих-кода в документации.
+
+Демонстрационный генератор штрих-кода WPF
+Ниже приведена демонстрация приложения WPF Barcode Generator, которое мы только что создали.
+
+Демонстрационный генератор штрих-кода WPF
+Демонстрационный генератор штрих-кода WPF
+
+Скачать исходный код
+Вы можете загрузить полный исходный код приложения WPF Barcode Generator с GitHub.
+
+Получить бесплатную лицензию
+Вы можете получить бесплатную временную лицензию, чтобы попробовать библиотеку без ограничений пробной версии.
+
+Вывод
+В этой статье мы узнали, как генерировать различные типы штрих-кодов в приложении WPF. Мы также видели, как программно просмотреть сгенерированное изображение штрих-кода. Кроме того, вы можете узнать больше об Aspose.BarCode for .NET API, используя документацию. В случае возникновения каких-либо неясностей, пожалуйста, свяжитесь с нами на нашем форуме.
+</pre>
+<img src="img/1674294231_gas-kvas-com-p-tatu-shtrikh-kod-risunki-27.png" width="400" height="380" alt="">
+<Window>
+<pre>
+    if (biomat.Text != "" && textboxic.Text != "")
+    {
+
+        if (textboxic.Text.Length == 6) {
+            int selectedId = (int)biomat.SelectedValue;
+
+
+            var bibi = db.biomat.FirstOrDefault(x => x.id == selectedId);
+
+            int orderId = bibi.id;
+            string date = DateTime.Now.ToString("ddMMyyyy");
+            string kodek = textboxic.Text;
+            string barcodeData = orderId + date + kodek;
+
+
+            System.Drawing.Image image = null;
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.BackColor = System.Drawing.Color.White;
+            b.ForeColor = System.Drawing.Color.Black;
+            b.IncludeLabel = true;
+            b.Alignment = BarcodeLib.AlignmentPositions.CENTER;
+            b.LabelPosition = BarcodeLib.LabelPositions.BOTTOMCENTER;
+            b.ImageFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
+            System.Drawing.Font font = new System.Drawing.Font("verdana", 10f);
+            b.LabelFont = font;
+            b.Height = 100;
+            b.Width = 200;
+            image = b.Encode(BarcodeLib.TYPE.CODE128C, barcodeData);
+            System.Drawing.Image bitmap = b.Encode(BarcodeLib.TYPE.CODE128C, barcodeData);
+
+
+            using (var memoryStream = new System.IO.MemoryStream())
+            {
+                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                memoryStream.Position = 0;
+                System.Windows.Media.Imaging.BitmapImage bitmapImage = new System.Windows.Media.Imaging.BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                barcodeImage.Source = bitmapImage;
+            }
+            image.Save(@"C:\Users\stepa\source\repos\bibliol\practika\practika\shtrihkod\uyte.pdf");
+        }
+        else
+        {
+            MessageBox.Show("Введите 6 цифр");
+        }
+       
+    }
+    else
+    {
+        MessageBox.Show("Введите уникальный код для штрихкода и выберите биоматериал");
+    }
+    
+</pre>
+</Window>
+</body>
+</html>

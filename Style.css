@@ -1,0 +1,72 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+    }
+    .main a {
+    text-align: center;
+    display: block;
+    padding: 10px 15px;
+    margin: 5px 0;
+    
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    }
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ABCDEF;
+    }
+    
+    h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 500px;
+    position: relative;
+    right: -500px;
+    }
+    
+    .main {
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: fit-content;
+    /* Автоматический размер ширины в соответствии с содержимым */
+    margin: auto;
+    /* Автоматические отступы для центрирования */
+    position: relative;
+    right: 90px;
+    }
+    
+    .main a {
+    text-align: center;
+    display: block;
+    padding: 10px 15px;
+    margin: 5px 0;
+    background-color: #0084ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    }
+    
+    
+    .btn{
+        background-color: #b19ecf;
+    }
